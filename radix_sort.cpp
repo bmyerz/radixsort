@@ -16,9 +16,11 @@ int compare(const void* a, const void* b) {
       return *(uint64_t*)a - *(uint64_t*)b; 
 }
 
-uint64_t depth_limit = 2;
 
 void radix_sort(uint64_t* a, size_t len, int depth=0) {
+  const uint64_t depth_limit = 2;
+
+  // at some point just use a comparison sort
   if (depth == depth_limit) { 
     qsort(a, len, sizeof(uint64_t), compare);
     return;
@@ -26,6 +28,9 @@ void radix_sort(uint64_t* a, size_t len, int depth=0) {
 
   //std::cout << "sorting depth " << depth << std::endl;
 
+  // MSD radix sort
+  // Each "digit" will be one byte
+  // We have 16 buckets, one for each byte value
   const uint64_t mask = 0xF000000000000000 >> (depth*4);
   const size_t nbuckets = 16;
 
